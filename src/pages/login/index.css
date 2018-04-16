@@ -1,0 +1,21 @@
+.form{
+  width: 400px;
+  border: 1px solid #eee;
+  padding: 10px 20px;
+  border-radius: 10px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+  height: 300px;
+  box-shadow: 0 0 100px rgba(0,0,0,.08);
+  background: #fff;
+}
+.title{
+  color: #666;
+  padding: 16px;
+  font-size: 18px;
+  text-align: center;
+}
