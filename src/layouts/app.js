@@ -5,13 +5,16 @@ import { connect } from 'dva'
 import PropTypes from 'prop-types'
 import {openPages} from '../utils/config'
 import styles from './app.css';
-
+import Loader from '../components/Loader'
 
 const App = ({children, dispatch, app, loading, location}) => {
   let { pathname } = location
   if(openPages && openPages.includes(pathname)){
     return (
-      <div className={styles.loginBK}>{children}</div>
+      <div>
+        <Loader fullScreen spinning={loading.global}></Loader>
+        {children}
+      </div>
     )
   } else {
     return (

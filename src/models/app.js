@@ -12,9 +12,7 @@ export default {
       id: '',
       head: '',
     },
-    permissions: {
-      visit: [],
-    },
+    permissions: '',
   },
   subscriptions: {
     setupHistory ({ dispatch, history }) {
