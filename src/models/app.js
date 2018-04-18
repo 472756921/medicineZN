@@ -11,7 +11,7 @@ export default {
   subscriptions: {
     setupHistory ({ dispatch, history }) {
       history.listen((location) => {
-        if(location.pathname!='/login'){
+        if(location.pathname!=='/login'){
           dispatch({ type: 'query' });
         }
       })
@@ -20,8 +20,8 @@ export default {
   effects: {
     * query( {payload}, {call, put, select} ) {
       const {data}  = yield call(getUser);
-      const {user, success} = data;
-      if(!user) {
+      const {user} = data;
+      if(user === undefined) {
         yield put(routerRedux.push({
           pathname: '/login',
         }))

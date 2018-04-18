@@ -1,5 +1,5 @@
 import { connect } from 'dva'
-import { Button, Icon, Form, Input, Checkbox } from 'antd'
+import { Button, Icon, Form, Input } from 'antd'
 import styles from './index.css'
 import PropTypes from 'prop-types'
 import {name} from '../../utils/config'

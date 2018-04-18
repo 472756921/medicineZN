@@ -22,7 +22,7 @@ export default {
       } else {
         yield put({type: 'loginScuess', payload: data});
         yield put(routerRedux.push({
-          pathname: '/web',
+          pathname: '/',
         }))
       }
     },

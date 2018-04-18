@@ -7,7 +7,6 @@ import {openPages} from '../utils/config'
 import Loader from '../components/Loader'
 import { name, footerText } from '../utils/config'
 import { Link } from 'react-router-dom'
-import styles from './app.css';
 import { Layout, Menu, Icon, Avatar, Row, Col, Dropdown } from 'antd';
 const { Header, Sider, Content, Footer } = Layout;
 
@@ -32,7 +31,6 @@ const App = ({children, dispatch, app, loading, location}) => {
         </Menu.Item>
       )
     })
-
   }
   let menus = getMuensTree(app.menu);
   if(openPages && openPages.includes(pathname)){
