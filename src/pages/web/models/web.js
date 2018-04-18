@@ -1,9 +1,5 @@
-/* global window */
-/* global document */
-/* global location */
-/* eslint no-restricted-globals: ["error", "event"] */
 import { routerRedux } from 'dva/router';
-import { query, querytypeList } from '../service/web';
+import { query, querytypeList, queryArticle } from '../service/web';
 
 export default {
   namespace: 'web',
@@ -11,13 +7,14 @@ export default {
     listData: [],
     typeList: [],
     type: '',
+    visible: false,
+    article: ''
   },
   subscriptions: {
     setUp({dispatch, history}) {
       history.listen((location) => {
         if(location.pathname === '/web'){
           dispatch({type: 'querytypes',});
-          dispatch({type: 'query',});
         }
       })
     }
@@ -34,7 +31,14 @@ export default {
       const {data} = yield call(querytypeList, payload)
       if (data) {
         yield put({type: 'queryTypeSuccess', payload: data});
+        yield put({type: 'query', payload:{page: 1, pageSize: 20, type: data[0].id}});
       }
+    },
+
+    * queryArticle ({ payload }, { call, put }) {
+      console.log(payload.articleID);
+      const {data} = yield call(queryArticle, {id:payload.articleID})
+      yield put({type: 'modelOP', payload: {visible: true}});
     },
   },
   reducers: {
@@ -44,6 +48,11 @@ export default {
 
     queryTypeSuccess(state, {payload}) {
       return {...state, typeList: payload}
+    },
+
+    modelOP(state, {payload}) {
+      console.log(payload);
+      return {...state, visible: payload.visible}
     }
   },
 }

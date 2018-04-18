@@ -33,6 +33,18 @@ const article = {
     ]
     res.json(type);
   },
+
+  'GET /apiM/article': (req, res) => {
+    let {query} = req;
+    const {id} = query;
+    let article = {
+      id: id,
+      title: Mock.mock('@ctitle'),
+      date: Mock.mock('@date("yyyy-MM-dd HH:mm")'),
+      content: Mock.mock('@cparagraph(500, 5000)'),
+    };
+    res.json(article);
+  },
 }
 
 module.exports = article;

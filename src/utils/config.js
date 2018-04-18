@@ -11,5 +11,6 @@ module.exports = {
     loginOut: api_M + '/user/loginOut',
     articleList: api_M + '/article/list',
     articleTyles:  api_M + '/article/types',
+    articleByID:  api_M + '/article',
   }
 }

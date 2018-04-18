@@ -13,3 +13,8 @@ export function querytypeList (data) {
   let url = getParmas( api.articleTyles, data);
   return request(url, {method: 'get', headers: JSONS});
 }
+
+export function queryArticle (data) {
+  let url = getParmas( api.articleByID, data);
+  return request(url, {method: 'get', headers: JSONS});
+}
