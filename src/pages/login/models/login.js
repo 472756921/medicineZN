@@ -9,6 +9,7 @@ import { message } from 'antd';
 export default {
   namespace: 'login',
   state: {
+    user: '',
   },
   subscriptions: {
   },
@@ -17,9 +18,22 @@ export default {
       const data = yield call(login, payload)
       if(data.err) {
         message.error(data.err.response.statusText);
+        return false
+      } else {
+        sessionStorage.setItem('user', JSON.stringify(data.data));
+        yield put({type: 'loginScuess', payload: data});
+        yield put(routerRedux.push({
+          pathname: '/',
+        }))
       }
     },
   },
   reducers: {
+    loginScuess (state, {payload} ) {
+      return {
+        ...state,
+        user: payload.data,
+      }
+    }
   },
 }

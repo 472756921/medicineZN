@@ -3,7 +3,10 @@ class index extends React.Component{
 
   render() {
     return(
-      <div>index</div>
+      <div>
+        <div>{sessionStorage.getItem('user')}</div>
+
+      </div>
     )
   }
 }
