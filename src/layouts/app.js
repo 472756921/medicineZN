@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 import {openPages} from '../utils/config'
 import Loader from '../components/Loader'
 import { name, footerText } from '../utils/config'
+import { Link } from 'react-router-dom'
 import styles from './app.css';
 import { Layout, Menu, Icon, Avatar, Row, Col, Dropdown } from 'antd';
 const { Header, Sider, Content, Footer } = Layout;
@@ -22,7 +23,18 @@ const menu = (
 );
 
 const App = ({children, dispatch, app, loading, location}) => {
-  let { pathname } = location
+  let { pathname } = location;
+  const getMuensTree = (data)=>{
+    return data.map((item, i) => {
+      return (
+        <Menu.Item key={i+1}>
+          <Link to={item.route}><Icon type={item.icon}></Icon>{item.name}</Link>
+        </Menu.Item>
+      )
+    })
+
+  }
+  let menus = getMuensTree(app.menu);
   if(openPages && openPages.includes(pathname)){
     return (
       <div>
@@ -36,23 +48,8 @@ const App = ({children, dispatch, app, loading, location}) => {
         <Layout style={{height: '100%'}}>
           <Sider breakpoint="lg" collapsedWidth="0">
             <div style={{color: '#fff'}}>this is LOGO</div>
-            <Menu theme="dark" mode="inline" defaultSelectedKeys={['4']}>
-              <Menu.Item key="1">
-                <Icon type="user" />
-                <span className="nav-text">nav 1</span>
-              </Menu.Item>
-              <Menu.Item key="2">
-                <Icon type="video-camera" />
-                <span className="nav-text">nav 2</span>
-              </Menu.Item>
-              <Menu.Item key="3">
-                <Icon type="upload" />
-                <span className="nav-text">nav 3</span>
-              </Menu.Item>
-              <Menu.Item key="4">
-                <Icon type="user" />
-                <span className="nav-text">nav 4</span>
-              </Menu.Item>
+            <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
+              {menus}
             </Menu>
           </Sider>
           <Layout>

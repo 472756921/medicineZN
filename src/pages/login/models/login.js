@@ -20,10 +20,9 @@ export default {
         message.error(data.err.response.statusText);
         return false
       } else {
-        sessionStorage.setItem('user', JSON.stringify(data.data));
         yield put({type: 'loginScuess', payload: data});
         yield put(routerRedux.push({
-          pathname: '/',
+          pathname: '/web',
         }))
       }
     },

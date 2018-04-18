@@ -4,7 +4,7 @@ module.exports = {
   name: '智能辅助系统',
   footerText: ' Admin © 2018 Benson',
   logo: '',
-  openPages: ['/login'],
+  openPages: ['/login', '404'],
   api: {
     getUser: api_M + '/user/getUser',
     login: api_M + '/user/login',
