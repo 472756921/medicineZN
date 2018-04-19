@@ -1,0 +1,11 @@
+.articleTitle{
+  font-size: 30px;
+  text-align: center;
+}
+.articleDate{
+  text-align: center;
+}
+.articleContent{
+  text-indent:2em;
+  line-height: 26px;
+}

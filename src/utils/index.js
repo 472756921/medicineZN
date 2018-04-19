@@ -4,7 +4,7 @@ export const getParmas = (url, data) => {
   let sendUrl = url;
   let i = 0;
   for (let it in data){
-    if(i == 0){
+    if(i === 0){
       sendUrl+='?'+it+'='+data[it];
     }else {
       sendUrl+='&'+it+'='+data[it];

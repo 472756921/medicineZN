@@ -8,7 +8,12 @@ export default {
     typeList: [],
     type: '',
     visible: false,
-    article: ''
+    article: {
+      id: '',
+      title: '',
+      content: '',
+      date: '',
+    }
   },
   subscriptions: {
     setUp({dispatch, history}) {
@@ -36,9 +41,11 @@ export default {
     },
 
     * queryArticle ({ payload }, { call, put }) {
-      console.log(payload.articleID);
       const {data} = yield call(queryArticle, {id:payload.articleID})
-      yield put({type: 'modelOP', payload: {visible: true}});
+      yield put({type: 'activeArticle', data})
+      if(data) {
+        yield put({type: 'modelOP', payload: {visible: true}});
+      }
     },
   },
   reducers: {
@@ -51,8 +58,11 @@ export default {
     },
 
     modelOP(state, {payload}) {
-      console.log(payload);
       return {...state, visible: payload.visible}
+    },
+
+    activeArticle(state, {data}){
+      return {...state, article: data}
     }
   },
 }

@@ -41,7 +41,7 @@ const article = {
       id: id,
       title: Mock.mock('@ctitle'),
       date: Mock.mock('@date("yyyy-MM-dd HH:mm")'),
-      content: Mock.mock('@cparagraph(500, 5000)'),
+      content: Mock.mock('@cparagraph(100, 400)'),
     };
     res.json(article);
   },

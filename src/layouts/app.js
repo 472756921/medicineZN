@@ -54,7 +54,7 @@ const App = ({children, dispatch, app, loading, location}) => {
             <Header style={{ background: '#fff', padding: '0 20px'}}>
               <Row type="flex" justify="space-between">
                 <Col span={4}><div style={{fontSize: 18 }}>{name}</div></Col>
-                <Col span={2}>
+                <Col span={3} style={{textAlign:'right'}}>
                   <Avatar style={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>U</Avatar>
                   <Dropdown overlay={menu} trigger={['click']}>
                     <a className="ant-dropdown-link" href="#" style={{marginLeft: '10px'}}>

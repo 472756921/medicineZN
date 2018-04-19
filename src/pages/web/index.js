@@ -1,7 +1,9 @@
 import React from 'react';
 import { connect } from 'dva'
 import { Button, Select, Divider, Table, Modal } from 'antd';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import styles from './web.css';
 const Option = Select.Option;
 
 const columns = [{
@@ -19,7 +21,7 @@ const columns = [{
     <span>
       <a href="javascript:;" onClick={() => {read(text)}}>阅读</a>
       <Divider type="vertical" />
-      <a href="javascript:;">修改</a>
+      <Link to={`web/${text.id}`}>修改</Link>
       <Divider type="vertical" />
       <a href="javascript:;" style={{color:'red'}}>删除</a>
     </span>
@@ -57,6 +59,7 @@ const web = ({loading, web, dispatch}) => {
   if(web.typeList.length > 0) {
     select = se(web);
   }
+
   return(
     <div>
       <div>
@@ -67,10 +70,10 @@ const web = ({loading, web, dispatch}) => {
       <div>
         <Table columns={columns} onChange={chage} dataSource={web.listData.data} loading={loading.models.web} pagination={{'total': web.listData.total, 'pageSize': 20}} />
       </div>
-      <Modal title="Basic Modal" visible={web.visible} onOk={handleOk} onCancel={handleCancel}>
-        <p>some contents...</p>
-        <p>some contents...</p>
-        <p>some contents...</p>
+      <Modal title="文章详情" visible={web.visible} onOk={handleOk} onCancel={handleCancel} width='50%'>
+        <div className={styles.articleTitle}>{web.article.title}</div>
+        <div className={styles.articleDate}>{web.article.date}</div>
+        <div className={styles.articleContent}>{web.article.content}</div>
       </Modal>
     </div>
   )
