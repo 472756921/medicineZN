@@ -1,2 +1,9 @@
 .content{
 }
+.back{
+  margin-bottom: 10px;
+  color: #1890ff;
+}
+.back span{
+  cursor: pointer;
+}

@@ -52,6 +52,9 @@ const web = ({loading, web, dispatch}) => {
     dispatch({type: 'web/query', payload:{ page: p.current, pageSize: 20, type: 1 }});
   }
   const handleOk = () => {};
+  const newArticle = () => {
+    dispatch({type: 'web/modelOP', payload:{ visible: false }});
+  };
   const handleCancel = () => {
     dispatch({type: 'web/modelOP', payload:{ visible: false }});
   };
@@ -64,7 +67,7 @@ const web = ({loading, web, dispatch}) => {
     <div>
       <div>
         类型：{select}
-        <Button type="primary" icon="plus" style={{float: 'right'}}>新增文章</Button>
+        <Button type="primary" icon="plus" style={{float: 'right'}} onClick={newArticle}>新增文章</Button>
       </div>
       <Divider />
       <div>
