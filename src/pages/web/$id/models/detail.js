@@ -14,14 +14,6 @@ export default {
     }
   },
   subscriptions: {
-    setup ({ dispatch, history }) {
-      history.listen(({ pathname }) => {
-        const match = pathToRegexp('/web/:id').exec(pathname)
-        if (match) {
-          dispatch({ type: 'querytypes' })
-        }
-      })
-    },
   },
   effects: {
     * queryArticle ({ payload }, { call, put }) {

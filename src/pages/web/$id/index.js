@@ -11,12 +11,37 @@ const Option = Select.Option;
 let editor = '';
 let title = '';
 let date = '';
+let dis = '';
+
+
+const se = (web, typeID, type) => {
+  let index = web.filter( it => {
+    if(it.id === typeID) {
+      return it;
+    }
+  })
+  return (
+    <Select defaultValue={index[0].name} style={{ width: 200, zIndex: '11000' }} onChage={change}>
+      {
+        web!==''?web.map((it, i) => {
+          return (<Option value={it.id} key={it.id}>{it.name}</Option>)
+        }):''
+      }
+    </Select>
+  )
+}
+const change = (data) => {
+
+}
+let select = '';
 class article extends React.Component {
 
   componentWillMount() {
+    dis = this.props.dispatch;
     const pathname = this.props.history.location.pathname;
     const match = pathToRegexp('/web/:id').exec(pathname);
     this.props.dispatch({type: 'detail/queryArticle', payload:{articleID: match[1]}});
+    this.props.dispatch({type: 'detail/querytypes'});
   }
 
   componentDidMount () {
@@ -25,10 +50,14 @@ class article extends React.Component {
     editor = new E(toolbar, text);
     editor.customConfig.showLinkImg = false;
     editor.customConfig.uploadImgServer = '/upload'  // 上传图片到服务器
+    editor.customConfig.zIndex = 1;
     editor.create();
   }
 
   componentDidUpdate() {
+    if(this.props.detail.typeList.length > 0) {
+      select = se(this.props.detail.typeList, this.props.detail.article.typeID, this.props.detail.article.type);
+    }
     date = this.props.detail.article.date;
     title = this.props.detail.article.title;
     editor.txt.html(this.props.detail.article.content);
@@ -50,13 +79,7 @@ class article extends React.Component {
           <Input addonBefore="标题" value={title}/>
         </div>
         <div style={{ marginBottom: 16, width: '400px' }}>
-          <span>类型：</span>
-          <Select defaultValue="lucy" style={{ width: 120, zIndex: '999' }}>
-            <Option value="jack">Jack</Option>
-            <Option value="lucy">Lucy</Option>
-            <Option value="disabled" disabled>Disabled</Option>
-            <Option value="Yiminghe">yiminghe</Option>
-          </Select>
+          <span>类型：{select}</span>
         </div>
         <div>
           <div id='toolbar' style={{borderTop: '1px solid #999'}}></div>
@@ -70,8 +93,9 @@ class article extends React.Component {
 }
 
 article.propTypes = {
+  typeList: PropTypes.object,
   detail: PropTypes.object,
   loading: PropTypes.object,
 }
 
-export default connect(({ loading, detail }) => ({ loading, detail }))(article)
+export default connect(({ loading, detail, typeList }) => ({ loading, detail, typeList }))(article)

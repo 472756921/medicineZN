@@ -74,6 +74,7 @@ const web = ({loading, web, dispatch}) => {
         <Table columns={columns} onChange={chage} dataSource={web.listData.data} loading={loading.models.web} pagination={{'total': web.listData.total, 'pageSize': 20}} />
       </div>
       <Modal title="文章详情" visible={web.visible} onOk={handleOk} onCancel={handleCancel} width='50%'>
+        <div>类型：{web.article.type}</div>
         <div className={styles.articleTitle}>{web.article.title}</div>
         <div className={styles.articleDate}>{web.article.date}</div>
         <div className={styles.articleContent}>{web.article.content}</div>
