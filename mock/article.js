@@ -21,8 +21,7 @@ const article = {
       total: nd.length,
       page: Number(query.page),
     }
-    setTimeout(()=>{
-      res.json(resData);}, 1000)
+    res.json(resData);
   },
 
   'GET /apiM/article/types': (req, res) => {

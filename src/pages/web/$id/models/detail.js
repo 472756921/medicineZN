@@ -4,6 +4,7 @@ import {queryArticle, querytypeList} from "../../service/web";
 export default {
   namespace: 'detail',
   state: {
+    optype: 'edit',
     typeList: '',
     article: {
       id: '',

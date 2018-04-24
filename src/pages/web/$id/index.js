@@ -14,14 +14,21 @@ let date = '';
 let dis = '';
 
 
-const se = (web, typeID, type) => {
+const se = (web, typeID) => {
+  if(web.length <= 0 || typeID === undefined) {
+    return (<div>none</div>)
+  }
   let index = web.filter( it => {
     if(it.id === typeID) {
       return it;
     }
   })
+  let dv = '';
+  if(typeID !== undefined) {
+    dv = index[0].name;
+  }
   return (
-    <Select defaultValue={index[0].name} style={{ width: 200, zIndex: '11000' }} onChage={change}>
+    <Select defaultValue={dv} style={{ width: 200, zIndex: '11000' }} onChange={change}>
       {
         web!==''?web.map((it, i) => {
           return (<Option value={it.id} key={it.id}>{it.name}</Option>)
@@ -40,8 +47,11 @@ class article extends React.Component {
     dis = this.props.dispatch;
     const pathname = this.props.history.location.pathname;
     const match = pathToRegexp('/web/:id').exec(pathname);
-    this.props.dispatch({type: 'detail/queryArticle', payload:{articleID: match[1]}});
     this.props.dispatch({type: 'detail/querytypes'});
+    if(dis.optype === 'new') {
+    } else {
+      this.props.dispatch({type: 'detail/queryArticle', payload:{articleID: match[1]}});
+    }
   }
 
   componentDidMount () {
@@ -56,7 +66,7 @@ class article extends React.Component {
 
   componentDidUpdate() {
     if(this.props.detail.typeList.length > 0) {
-      select = se(this.props.detail.typeList, this.props.detail.article.typeID, this.props.detail.article.type);
+      select = se(this.props.detail.typeList, this.props.detail.article.typeID);
     }
     date = this.props.detail.article.date;
     title = this.props.detail.article.title;
@@ -74,16 +84,18 @@ class article extends React.Component {
     return(
       <div className={styles.content}>
         <div className={styles.back}> <span onClick={this.back}><Icon type="left" /> 返回</span></div>
-        {date}
         <div style={{ marginBottom: 16, width: '400px' }}>
-          <Input addonBefore="标题" value={title}/>
+          <span>发布时间：{date}</span>
         </div>
         <div style={{ marginBottom: 16, width: '400px' }}>
           <span>类型：{select}</span>
         </div>
+        <div style={{ marginBottom: 16, width: '400px' }}>
+          <Input addonBefore="标题" value={title}/>
+        </div>
         <div>
           <div id='toolbar' style={{borderTop: '1px solid #999'}}></div>
-          <div id='text' style={{height: '50vh', border: '1px solid #999'}}></div>
+          <div id='text' style={{height: '45vh', border: '1px solid #999'}}></div>
         </div>
         <br/>
         <Button type="primary" onClick={this.send}>发布</Button>
