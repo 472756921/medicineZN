@@ -6,6 +6,7 @@ export default {
   state: {
     optype: 'edit',
     typeList: '',
+    typeName: '',
     article: {
       id: '',
       title: '',
@@ -15,13 +16,31 @@ export default {
     }
   },
   subscriptions: {
+    setUp({dispatch, history}) {
+      history.listen((location) => {
+        if (location.pathname.indexOf('/web/') !== -1) {
+          const id = /web\/\d+/.exec(location.pathname);
+          if(id !== null) {
+            dispatch({type: 'queryArticle', payload:{articleID: id}});
+          } else {
+            dispatch({type: 'querytypes'});
+          }
+        }
+      })
+    }
   },
   effects: {
     * queryArticle ({ payload }, { call, put }) {
-      const {data} = yield call(queryArticle, {id:payload.articleID})
-      yield put({type: 'activeArticle', data})
-      if(data) {
-        yield put({type: 'activeArticle', data});
+      const article = yield call(queryArticle, {id:payload.articleID});
+      const types = yield call(querytypeList);
+      const typeName = types.data.filter((it) => {
+        if(it.id === article.data.typeID) {
+          return it;
+        }
+      })
+      if(types && article) {
+        let d = {types:types.data, article:article.data, typeName: typeName[0].name};
+        yield put({type: 'activeArticle', d});
       }
     },
     * send(state, {data}) {
@@ -34,8 +53,11 @@ export default {
     },
   },
   reducers: {
-    activeArticle(state, {data}){
-      return {...state, article: data}
+    typeChange(state, {data}) {
+      return {...state, optype: data.type, article: ''}
+    },
+    activeArticle(state, {d:{article, types, typeName}}){
+      return {...state, article: article, typeList: types, typeName: typeName}
     },
     typeList(state, {data}) {
       return {...state, typeList: data}

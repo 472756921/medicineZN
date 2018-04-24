@@ -57,7 +57,7 @@ const App = ({children, dispatch, app, loading, location}) => {
                 <Col span={3} style={{textAlign:'right'}}>
                   <Avatar style={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>U</Avatar>
                   <Dropdown overlay={menu} trigger={['click']}>
-                    <a className="ant-dropdown-link" href="#" style={{marginLeft: '10px'}}>
+                    <a className="ant-dropdown-link" href="" style={{marginLeft: '10px'}}>
                       Click me <Icon type="down" />
                     </a>
                   </Dropdown>

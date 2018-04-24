@@ -13,29 +13,18 @@ let title = '';
 let date = '';
 let dis = '';
 
-
-const se = (web, typeID) => {
-  if(web.length <= 0 || typeID === undefined) {
-    return (<div>none</div>)
+const se = (web, typeName) => {
+  if(web!==undefined && web !== ''){
+    return (
+      <Select defaultValue={typeName} style={{ width: 200, zIndex: '11000' }} onChange={change}>
+        {
+          web!==''?web.map((it, i) => {
+            return (<Option value={it.id} key={it.id}>{it.name}</Option>)
+          }):''
+        }
+      </Select>
+    )
   }
-  let index = web.filter( it => {
-    if(it.id === typeID) {
-      return it;
-    }
-  })
-  let dv = '';
-  if(typeID !== undefined) {
-    dv = index[0].name;
-  }
-  return (
-    <Select defaultValue={dv} style={{ width: 200, zIndex: '11000' }} onChange={change}>
-      {
-        web!==''?web.map((it, i) => {
-          return (<Option value={it.id} key={it.id}>{it.name}</Option>)
-        }):''
-      }
-    </Select>
-  )
 }
 const change = (data) => {
 
@@ -44,14 +33,6 @@ let select = '';
 class article extends React.Component {
 
   componentWillMount() {
-    dis = this.props.dispatch;
-    const pathname = this.props.history.location.pathname;
-    const match = pathToRegexp('/web/:id').exec(pathname);
-    this.props.dispatch({type: 'detail/querytypes'});
-    if(dis.optype === 'new') {
-    } else {
-      this.props.dispatch({type: 'detail/queryArticle', payload:{articleID: match[1]}});
-    }
   }
 
   componentDidMount () {
@@ -65,9 +46,7 @@ class article extends React.Component {
   }
 
   componentDidUpdate() {
-    if(this.props.detail.typeList.length > 0) {
-      select = se(this.props.detail.typeList, this.props.detail.article.typeID);
-    }
+    select = se(this.props.detail.typeList, this.props.detail.typeName);
     date = this.props.detail.article.date;
     title = this.props.detail.article.title;
     editor.txt.html(this.props.detail.article.content);
@@ -85,10 +64,12 @@ class article extends React.Component {
       <div className={styles.content}>
         <div className={styles.back}> <span onClick={this.back}><Icon type="left" /> 返回</span></div>
         <div style={{ marginBottom: 16, width: '400px' }}>
-          <span>发布时间：{date}</span>
+          {
+            this.props.detail.optype === 'new'?'':'发布时间：'+date
+          }
         </div>
         <div style={{ marginBottom: 16, width: '400px' }}>
-          <span>类型：{select}</span>
+          <span>文章类型：{select}</span>
         </div>
         <div style={{ marginBottom: 16, width: '400px' }}>
           <Input addonBefore="标题" value={title}/>
@@ -105,9 +86,8 @@ class article extends React.Component {
 }
 
 article.propTypes = {
-  typeList: PropTypes.object,
   detail: PropTypes.object,
   loading: PropTypes.object,
 }
 
-export default connect(({ loading, detail, typeList }) => ({ loading, detail, typeList }))(article)
+export default connect(({ loading, detail }) => ({ loading, detail }))(article)

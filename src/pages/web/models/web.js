@@ -47,6 +47,12 @@ export default {
         yield put({type: 'modelOP', payload: {visible: true}});
       }
     },
+
+    *newArticle ({ payload }, { call, put }) {
+      yield put(routerRedux.push({
+        pathname: '/web/newA/',
+      }))
+    }
   },
   reducers: {
     querySuccess(state, {payload}) {

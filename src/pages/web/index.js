@@ -4,7 +4,6 @@ import { Button, Select, Divider, Table, Modal } from 'antd';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styles from './web.css';
-import { routerRedux } from 'dva/router'
 const Option = Select.Option;
 
 const columns = [{
@@ -52,13 +51,10 @@ const web = ({loading, web, dispatch}) => {
   const chage = (p, f, s) => {
     dispatch({type: 'web/query', payload:{ page: p.current, pageSize: 20, type: 1 }});
   }
-  const newArticle = () => {
-    routerRedux.push({pathname: '/web/newA/'});
-  };
+  const newArticle = () => {dispatch({type: 'web/newArticle'});};
   const handleOk = () => { dispatch({type: 'web/modelOP', payload:{ visible: false }}); };
-  const handleCancel = () => {
-    dispatch({type: 'web/modelOP', payload:{ visible: false }});
-  };
+  const handleCancel = () => {dispatch({type: 'web/modelOP', payload:{ visible: false }});};
+
   let select = '';
   if(web.typeList.length > 0) {
     select = se(web);
