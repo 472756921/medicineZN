@@ -4,36 +4,12 @@ import PropTypes from 'prop-types';
 import { Input, Icon, Button } from 'antd';
 import styles from './datail.css';
 import E from 'wangeditor';
-import pathToRegexp from 'path-to-regexp';
 import { Select } from 'antd';
 const Option = Select.Option;
 
 let editor = '';
-let title = '';
-let date = '';
-let dis = '';
 
-const se = (web, typeName) => {
-  if(web!==undefined && web !== ''){
-    return (
-      <Select defaultValue={typeName} style={{ width: 200, zIndex: '11000' }} onChange={change}>
-        {
-          web!==''?web.map((it, i) => {
-            return (<Option value={it.id} key={it.id}>{it.name}</Option>)
-          }):''
-        }
-      </Select>
-    )
-  }
-}
-const change = (data) => {
-
-}
-let select = '';
 class article extends React.Component {
-
-  componentWillMount() {
-  }
 
   componentDidMount () {
     const toolbar = document.getElementById('toolbar');
@@ -41,22 +17,35 @@ class article extends React.Component {
     editor = new E(toolbar, text);
     editor.customConfig.showLinkImg = false;
     editor.customConfig.uploadImgServer = '/upload'  // 上传图片到服务器
+    // editor.customConfig.focus = ''  // 上传图片到服务器
     editor.customConfig.zIndex = 1;
     editor.create();
   }
 
   componentDidUpdate() {
-    select = se(this.props.detail.typeList, this.props.detail.typeName);
-    date = this.props.detail.article.date;
-    title = this.props.detail.article.title;
     editor.txt.html(this.props.detail.article.content);
   }
 
   send = () => {
-    this.props.dispatch({type: 'detail/send', payload:{id: 1}});
+    if (this.props.detail.optype === 'new') {
+    } else if(this.props.detail.optype === 'edit') {
+    }
+    // this.props.dispatch({type: 'detail/send', payload:{id: 1}});
   }
   back = () => {
     window.history.back();
+  }
+
+  change = (data) => {
+    let article = this.props.detail.article;
+    article.type = data;
+    this.props.dispatch({type: 'detail/articleChange', payload:{article: article}});
+  }
+
+  titleChange = (data) => {
+    let article = this.props.detail.article;
+    article.title =  data.target.value;
+    this.props.dispatch({type: 'detail/articleChange', payload:{article: article}});
   }
 
   render() {
@@ -65,14 +54,24 @@ class article extends React.Component {
         <div className={styles.back}> <span onClick={this.back}><Icon type="left" /> 返回</span></div>
         <div style={{ marginBottom: 16, width: '400px' }}>
           {
-            this.props.detail.optype === 'new'?'':'发布时间：'+date
+            this.props.detail.optype === 'new'?'':'发布时间：'+ this.props.detail.article.date
           }
         </div>
         <div style={{ marginBottom: 16, width: '400px' }}>
-          <span>文章类型：{select}</span>
+          <span>文章类型：
+            {
+              this.props.loading.models.detail?'':<Select defaultValue={this.props.detail.article.typeName} style={{ width: 200, zIndex: '11000' }} onChange={this.change}>
+                {
+                  this.props.detail.typeList!==''?this.props.detail.typeList.map((it, i) => {
+                    return (<Option value={it.id} key={it.id}>{it.name}</Option>)
+                  }): ''
+                }
+              </Select>
+            }
+          </span>
         </div>
         <div style={{ marginBottom: 16, width: '400px' }}>
-          <Input addonBefore="标题" value={title}/>
+          <Input addonBefore="标题" value={this.props.detail.article.title} onChange={this.titleChange}/>
         </div>
         <div>
           <div id='toolbar' style={{borderTop: '1px solid #999'}}></div>
@@ -87,7 +86,8 @@ class article extends React.Component {
 
 article.propTypes = {
   detail: PropTypes.object,
+  web: PropTypes.object,
   loading: PropTypes.object,
 }
 
-export default connect(({ loading, detail }) => ({ loading, detail }))(article)
+export default connect(({ loading, detail, web }) => ({ loading, detail, web }))(article)

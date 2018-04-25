@@ -5,62 +5,69 @@ export default {
   namespace: 'detail',
   state: {
     optype: 'edit',
-    typeList: '',
-    typeName: '',
+    typeList: [],
     article: {
       id: '',
       title: '',
-      content: '',
-      date: '',
       type: '',
+      typeName: '',
+      date: '',
+      content: '',
     }
   },
   subscriptions: {
     setUp({dispatch, history}) {
-      history.listen((location) => {
-        if (location.pathname.indexOf('/web/') !== -1) {
-          const id = /web\/\d+/.exec(location.pathname);
-          if(id !== null) {
-            dispatch({type: 'queryArticle', payload:{articleID: id}});
-          } else {
-            dispatch({type: 'querytypes'});
-          }
+      history.listen(({pathname}) => {
+        if (pathname.indexOf('/web/') !== -1) {
+          const id = pathToRegexp('/web/:id').exec(pathname)[1];
+          dispatch({type: 'init', payload:{articleID: id}});
         }
       })
     }
   },
   effects: {
-    * queryArticle ({ payload }, { call, put }) {
-      const article = yield call(queryArticle, {id:payload.articleID});
-      const types = yield call(querytypeList);
-      const typeName = types.data.filter((it) => {
-        if(it.id === article.data.typeID) {
-          return it;
-        }
-      })
-      if(types && article) {
-        let d = {types:types.data, article:article.data, typeName: typeName[0].name};
-        yield put({type: 'activeArticle', d});
+
+    *init({payload}, {call, put, select}) {
+      let { typeList } = yield select(_ => _.web);
+
+      if(typeList.length <= 0) {
+        const {data} = article = yield call(querytypeList);
+        typeList = data;
+      }
+
+      let article = {
+        id: '',
+        title: '',
+        content: '',
+        date: '',
+        type: '',
+        typeName: '',
+      }
+
+      if(payload.articleID !== 'newA') { //edit文章
+        article = yield call(queryArticle, {id:payload.articleID});
+        const typeName = typeList.filter((it) => {
+          if(it.id === article.data.typeID) {
+            return it;
+          }
+        })
+        article.data.typeName = typeName[0].name;
+        yield put({type: 'activeArticle', payload:{article:article.data, optype:'edit', typeList: typeList}})
+      } else {  //new 文章
+        yield put({type: 'activeArticle', payload:{article:article, optype:'new', typeList: typeList}})
       }
     },
+
     * send(state, {data}) {
     },
-    * querytypes ({ payload }, { call, put }) {
-      const {data} = yield call(querytypeList, payload)
-      if (data) {
-        yield put({type: 'typeList', data});
-      }
-    },
+
   },
   reducers: {
-    typeChange(state, {data}) {
-      return {...state, optype: data.type, article: ''}
+    activeArticle(state, {payload: {article, optype, typeList}}) {
+      return {...state, article: article, optype: optype, typeList: typeList}
     },
-    activeArticle(state, {d:{article, types, typeName}}){
-      return {...state, article: article, typeList: types, typeName: typeName}
+    articleChange(state, {payload: {article}}) {
+      return {...state, article: article}
     },
-    typeList(state, {data}) {
-      return {...state, typeList: data}
-    }
-  },
+  }
 }
