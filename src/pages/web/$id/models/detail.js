@@ -1,5 +1,6 @@
 import pathToRegexp from 'path-to-regexp'
-import {queryArticle, querytypeList} from "../../service/web";
+import {queryArticle, querytypeList, newArticle} from "../../service/web";
+import { message } from 'antd';
 
 export default {
   namespace: 'detail',
@@ -58,7 +59,13 @@ export default {
       }
     },
 
-    * send(state, {data}) {
+    * send({payload:{article}}, {call, put, select}) {
+      let {data} = yield call(newArticle, article);
+      if(data === 'ok'){
+        message.success('编辑成功');
+      } else {
+        message.error('网络错误，请稍后再试');
+      }
     },
 
   },

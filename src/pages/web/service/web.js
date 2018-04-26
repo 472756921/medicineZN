@@ -18,3 +18,7 @@ export function queryArticle (data) {
   let url = getParmas( api.articleByID, data);
   return request(url, {method: 'get', headers: JSONS});
 }
+
+export function newArticle (data) {
+  return request(api.newArticle, {method: 'post', body: JSON.stringify(data), headers: JSONS});
+}

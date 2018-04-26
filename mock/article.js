@@ -45,6 +45,11 @@ const article = {
     };
     res.json(article);
   },
+
+  'POST /apiM/newArticle': (req, res) => {
+    const article =eval(req.body)
+    res.json('ok');
+  },
 }
 
 module.exports = article;

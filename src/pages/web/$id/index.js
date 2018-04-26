@@ -1,10 +1,11 @@
 import { connect } from 'dva';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Input, Icon, Button } from 'antd';
+import { Input, Icon, Button, message } from 'antd';
 import styles from './datail.css';
 import E from 'wangeditor';
 import { Select } from 'antd';
+import { DateFormate } from '../../../utils/index';
 const Option = Select.Option;
 
 let editor = '';
@@ -23,14 +24,19 @@ class article extends React.Component {
   }
 
   componentDidUpdate() {
-    editor.txt.html(this.props.detail.article.content);
+    if(this.props.loading.models.detail){
+      editor.txt.html(this.props.detail.article.content);
+    }
   }
 
   send = () => {
-    if (this.props.detail.optype === 'new') {
-    } else if(this.props.detail.optype === 'edit') {
+    if(editor.txt.html() ==='<p><br></p>' || this.props.detail.article.title === '' || this.props.detail.article.type === '') {
+      message.error('请输入完整信息！');
+      return false;
     }
-    // this.props.dispatch({type: 'detail/send', payload:{id: 1}});
+    this.props.detail.article.content = editor.txt.html();
+    this.props.detail.article.date = DateFormate(new Date(), 'yyyy-MM-dd hh:mm');
+    this.props.dispatch({type: 'detail/send', payload:{article: this.props.detail.article}});
   }
   back = () => {
     window.history.back();

@@ -12,5 +12,6 @@ module.exports = {
     articleList: api_M + '/article/list',
     articleTyles:  api_M + '/article/types',
     articleByID:  api_M + '/article',
+    newArticle:  api_M + '/newArticle',
   }
 }
