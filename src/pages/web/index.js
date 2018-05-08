@@ -4,6 +4,7 @@ import { Button, Select, Divider, Table, Modal } from 'antd';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styles from './web.css';
+
 const Option = Select.Option;
 
 const columns = [{
@@ -19,17 +20,20 @@ const columns = [{
   key: 'action',
   render: (text, record) => (
     <span>
-      <a href="javascript:;" onClick={() => {read(text)}}>阅读</a>
+      <a href="javascript;" onClick={() => {read(text)}}>阅读</a>
       <Divider type="vertical" />
       <Link to={`web/${text.id}`}>修改</Link>
       <Divider type="vertical" />
-      <a href="javascript:;" style={{color:'red'}}>删除</a>
+      <a href="javascript;" style={{color:'red'}}>删除</a>
+      <span onClick={()=>changes(`web/${text.id}`)}>xxx</span>
     </span>
   ),
 }];
 
 function read(text) {
   dis({type: 'web/queryArticle', payload:{ visible: true, articleID: text.id }});
+}
+function changes(text) {
 }
 
 const se = (web, loading) => (
@@ -46,8 +50,8 @@ const changeData = (value) => {
   dis({type: 'web/query', payload:{ page: 1, pageSize: 20, type: value }});
 }
 let dis = '';
-const web = ({loading, web, dispatch}) => {
-  dis = dispatch;
+
+const webC = ({loading, web, dispatch, history}) => {
   const chage = (p, f, s) => {
     dispatch({type: 'web/query', payload:{ page: p.current, pageSize: 20, type: 1 }});
   }
@@ -80,9 +84,9 @@ const web = ({loading, web, dispatch}) => {
   )
 }
 
-web.propTypes = {
+webC.propTypes = {
   web: PropTypes.object,
   loading: PropTypes.object,
 }
 
-export default connect(({ loading, web }) => ({ loading, web }))(web)
+export default connect(({ loading, web }) => ({ loading, web }))(webC)

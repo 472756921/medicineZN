@@ -31,11 +31,6 @@ export default {
     *init({payload}, {call, put, select}) {
       let { typeList } = yield select(_ => _.web);
 
-      if(typeList.length <= 0) {
-        const {data} = article = yield call(querytypeList);
-        typeList = data;
-      }
-
       let article = {
         id: '',
         title: '',
@@ -45,11 +40,18 @@ export default {
         typeName: '',
       }
 
+      if(typeList.length <= 0) {
+        const {data} = article = yield call(querytypeList);
+        typeList = data;
+      }
+
       if(payload.articleID !== 'newA') { //edit文章
         article = yield call(queryArticle, {id:payload.articleID});
         const typeName = typeList.filter((it) => {
           if(it.id === article.data.typeID) {
             return it;
+          } else {
+            return '';
           }
         })
         article.data.typeName = typeName[0].name;

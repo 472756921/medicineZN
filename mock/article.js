@@ -1,7 +1,7 @@
 import Mock from 'MockJS';
 
 let usersListData = Mock.mock({
-  'data|80-100': [
+  'data|100-300': [
     {
       id: '@id',
       title: '@ctitle(4,20)',
