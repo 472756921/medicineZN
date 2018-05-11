@@ -19,7 +19,6 @@ export default {
     setUp({dispatch, history}) {
       history.listen((location) => {
         if(location.pathname === '/web'){
-          console.log(history);
           dispatch({type: 'querytypes',});
         }
       })
