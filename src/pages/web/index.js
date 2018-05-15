@@ -20,7 +20,7 @@ const columns = [{
   key: 'action',
   render: (text, record) => (
     <span>
-      <a href="javascript;" onClick={() => {read(text)}}>阅读</a>
+      <a onClick={() => read(text)}>阅读</a>
       <Divider type="vertical" />
       <Link to={`web/${text.id}`}>修改</Link>
       <Divider type="vertical" />
@@ -34,6 +34,7 @@ function read(text) {
   dis({type: 'web/queryArticle', payload:{ visible: true, articleID: text.id }});
 }
 function changes(text) {
+  alert(1)
 }
 
 const se = (web, loading) => (
@@ -51,7 +52,8 @@ const changeData = (value) => {
 }
 let dis = '';
 
-const webC = ({loading, web, dispatch, history}) => {
+const webC = ({loading, web, dispatch}) => {
+  dis = dispatch;
   const chage = (p, f, s) => {
     dispatch({type: 'web/query', payload:{ page: p.current, pageSize: 20, type: 1 }});
   }
