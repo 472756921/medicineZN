@@ -16,7 +16,7 @@ let Dashboard =  {
         const now = new Date()
         now.setDate(now.getDate() + 1)
         res.cookie('token', JSON.stringify({ id: user[0].id, deadline: now.getTime() }), {
-          maxAge: 600000,
+          maxAge: 1000 * 60 * 2,
           httpOnly: true,
         })
         res.send(user[0]);
