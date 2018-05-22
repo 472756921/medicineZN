@@ -25,16 +25,12 @@ const columns = [{
       <Link to={`web/${text.id}`}>修改</Link>
       <Divider type="vertical" />
       <a href="javascript;" style={{color:'red'}}>删除</a>
-      <span onClick={()=>changes(`web/${text.id}`)}>xxx</span>
     </span>
   ),
 }];
 
 function read(text) {
   dis({type: 'web/queryArticle', payload:{ visible: true, articleID: text.id }});
-}
-function changes(text) {
-  alert(1)
 }
 
 const se = (web, loading) => (
